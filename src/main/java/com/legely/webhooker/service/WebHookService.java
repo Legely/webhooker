@@ -1,18 +1,48 @@
 package com.legely.webhooker.service;
 
 
+import com.legely.webhooker.dto.WebHookRequest;
+import com.legely.webhooker.dto.WebhookResponce;
+import com.legely.webhooker.dto.WebhookStatsResponce;
+import com.legely.webhooker.entity.WebHookEvent;
 import com.legely.webhooker.repository.WebHookRepository;
-import jakarta.transaction.Transactional;
+
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class WebHookService {
 
-    WebHookRepository repository;
+    String MAIN_URL = "http://localhost:8080/";
+    private final WebHookRepository repository;
+
     public WebHookService(WebHookRepository repository) {
         this.repository = repository;
     }
 
+
+    // обработка принятия webhookа
     @Transactional
+    public WebhookResponce createEvent(WebHookRequest request) {
+        WebHookEvent webHookEvent = new WebHookEvent(request.sender(), request.message());
+        WebHookEvent savedEvent = repository.save(webHookEvent);
+
+        return new WebhookResponce(
+                savedEvent.getSender(),
+                savedEvent.getMessage(),
+                savedEvent.getTimeSend()
+        );
+    }
+
+
+
+   // выдача статистики
+    @Transactional(readOnly = true)
+    public List<WebHookEvent> findAll(){
+        return repository.findAll();
+    }
+
 
 }
