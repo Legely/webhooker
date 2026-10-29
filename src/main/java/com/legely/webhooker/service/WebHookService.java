@@ -18,8 +18,11 @@ public class WebHookService {
     String MAIN_URL = "http://localhost:8080/";
     private final WebHookRepository repository;
 
-    public WebHookService(WebHookRepository repository) {
+    private final TelegramBotService telegramBotService;
+
+    public WebHookService(WebHookRepository repository, TelegramBotService telegramBotService) {
         this.repository = repository;
+        this.telegramBotService = telegramBotService;
     }
 
 
@@ -29,6 +32,7 @@ public class WebHookService {
         WebHookEvent webHookEvent = new WebHookEvent(request.sender(), request.message());
         WebHookEvent savedEvent = repository.save(webHookEvent);
 
+        telegramBotService.sendMess(request.sender(), request.message());
         return new WebhookResponce(
                 savedEvent.getSender(),
                 savedEvent.getMessage(),

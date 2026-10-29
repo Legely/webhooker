@@ -4,6 +4,7 @@ package com.legely.webhooker.controller;
 import com.legely.webhooker.dto.WebHookRequest;
 import com.legely.webhooker.dto.WebhookResponce;
 import com.legely.webhooker.entity.WebHookEvent;
+import com.legely.webhooker.service.TelegramBotService;
 import com.legely.webhooker.service.WebHookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,11 @@ import java.util.List;
 public class WebhookController {
 
     WebHookService webHookService;
+    TelegramBotService telegramBotService;
 
-    public WebhookController(WebHookService webHookService) {
+    public WebhookController(WebHookService webHookService, TelegramBotService telegramBotService) {
         this.webHookService = webHookService;
+        this.telegramBotService = telegramBotService;
     }
 
     @GetMapping("/api/v1/events")
