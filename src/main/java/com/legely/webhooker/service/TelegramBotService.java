@@ -35,13 +35,36 @@ public class TelegramBotService implements SpringLongPollingBot, LongPollingSing
         return this;
     }
 
-    public void sendMess(String sender, String messageWebhook) {
+    public void MessHandler(String sender, String messageWebhook){
+        if (sender.equals("qwerty")) {
+            sendMessWarn(sender, messageWebhook);
+        } else {
+            sendMessStandart(sender, messageWebhook);
+        }
+    }
+
+
+    public void sendMessStandart(String sender, String messageWebhook) {
         SendMessage message = SendMessage.builder()
                 .chatId(chatId)
                 .text("Отправитель: " + sender + " текст сообщения: " + messageWebhook)
                 .build();
         try {
             telegramClient.execute(message);
+        } catch (TelegramApiException e) {
+            System.out.println("ошибка: " + e.getMessage());
+        }
+    }
+
+    public void sendMessWarn(String sender, String messageWebhook) {
+        SendMessage message = SendMessage.builder()
+                .chatId(chatId)
+                .text("Отправитель: " + sender + " текст сообщения: " + messageWebhook)
+                .build();
+        try {
+            for(int i =0; i<10; i++) {
+                telegramClient.execute(message);
+            }
         } catch (TelegramApiException e) {
             System.out.println("ошибка: " + e.getMessage());
         }

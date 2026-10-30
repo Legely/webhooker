@@ -32,7 +32,7 @@ public class WebHookService {
         WebHookEvent webHookEvent = new WebHookEvent(request.sender(), request.message());
         WebHookEvent savedEvent = repository.save(webHookEvent);
 
-        telegramBotService.sendMess(request.sender(), request.message());
+        telegramBotService.MessHandler(request.sender(), request.message());
         return new WebhookResponce(
                 savedEvent.getSender(),
                 savedEvent.getMessage(),
