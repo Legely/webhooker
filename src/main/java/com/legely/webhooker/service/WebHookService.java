@@ -15,9 +15,7 @@ import java.util.List;
 @Service
 public class WebHookService {
 
-    String MAIN_URL = "http://localhost:8080/";
     private final WebHookRepository repository;
-
     private final TelegramBotService telegramBotService;
 
     public WebHookService(WebHookRepository repository, TelegramBotService telegramBotService) {
